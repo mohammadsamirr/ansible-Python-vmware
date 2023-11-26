@@ -1,0 +1,61 @@
+---
+- name: Create VM from template
+  hosts: localhost
+  become: false
+  gather_facts: false
+  # collections:
+  # - community.vmware
+
+  vars_prompt:
+    - name: "vcenter_username"
+      prompt: "Enter your vCenter account username"
+      private: "no"
+    - name: "vcenter_password"
+      prompt: "Enter your password"
+      private: "no"
+    - name: "vm_name"
+      prompt: "Enter the hostame of VM you are creating (Ex: sl1mmglapp00 )"
+      private: "no"
+  
+  pre_tasks:
+    - include_vars: vars.yml
+
+
+  tasks:
+    - name: Create Folder
+      vmware_guest:
+      #community.vmware.vcenter_folder:
+        hostname: "{{ vcenter_hostname }}"
+        validate_certs: "{{ vcenter_validate_certs }}"
+        datacenter_name: "{{ vcenter_datacenter }}"
+        folder_name: "{{ vcenter_destination_folder }}"
+        folder_type: vm
+        state: present
+
+
+
+
+    - name: Create VM
+      vmware_guest:
+      #community.vmware.vcenter_folder:
+        hostname: "{{ vcenter_hostname }}"
+        validate_certs: "{{ vcenter_validate_certs }}"
+        datacenter_name: "{{ vcenter_datacenter }}"
+        name: "{{ vm_name }}"
+        template: "CORPOPS_LINUX_STANDARD_RHEL8.8_TMPLT"
+        folder: "{{ vcenter_destination_folder }}"
+        state: "{{ vm_state }}"
+        #guest_id: "{{ vm_guestid }}"
+        cluster: "Infrastructure"
+        #disk:
+        #  - size_gb: "{{ vm_disk_gb }}"
+        #    type: "{{ vm_disk_type }}"
+        #    datastore: "{{ vm_disk_datastore }}"
+         #hardware:
+        #  memory_gb: "{{ vm_hw_ram_gb }}"
+        #  num_cpus: "{{ vm_hw_cpu_n }}"
+        #  scsi: " {{ vm_hw_scsi }}"
+        network:
+          - name: "VM Network"
+            device_name: "VM Network - 10.48.6.x"
+

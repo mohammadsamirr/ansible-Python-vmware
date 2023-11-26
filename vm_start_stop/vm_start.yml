@@ -1,0 +1,41 @@
+---
+###############################################################
+#                                                             #
+#      Author:  Mohammad Samir                                #
+#        Note:  Please do not modify parameters or values     #
+#               as it may cause production issues.            #
+# Description:  This Playbook will power off the VM selected  #
+#        Date:  10/25/2023                                    #
+#                                                             #
+###############################################################
+- name: Start VM
+  hosts: localhost
+  become: false
+  gather_facts: false
+  collections:
+    - community.vmware
+  
+  vars_prompt:
+    - name: "vcenter_username"
+      prompt: "Enter your vCenter account username"
+      private: "no"
+    - name: "vcenter_password"
+      prompt: "Enter your password"
+      private: "no"
+    - name: "vm_name"
+      prompt: "Enter the hostame of VM you want to POWER ON (Ex: sl1mmglinuxmgt1 )"
+      private: "no"
+
+  pre_tasks:
+    - include_vars: vars.yml
+
+  tasks:
+    - name: power on
+      vmware_guest_powerstate:
+        hostname: "{{ vcenter_hostname }}"
+        username: "{{ vcenter_username }}"
+        password: "{{ vcenter_password }}"
+        name: "{{ vm_name }}"
+        validate_certs: "{{ vcenter_validate_certs }}"
+        state: powered-on
+       

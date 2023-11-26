@@ -1,0 +1,10 @@
+plugin: vmware_vm_inventory
+strict: False
+hostname: "vcenter.gen.zone"
+#username:
+#password:
+validate_certs: False
+with_tags: False
+groups:
+  VMs: True
+

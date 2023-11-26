@@ -1,0 +1,5 @@
+---
+collections:
+  - name: community.vmware
+  - name: community.vmware.vcenter_folder
+  - name: vmware_guest_powerstate

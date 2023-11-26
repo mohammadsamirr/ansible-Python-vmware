@@ -1,0 +1,5 @@
+---
+vcenter_hostname: "vcenter.gen.zone"
+#vcenter_hostname: "om1mmgplivc01.gen.zone"
+vcenter_datacenter: "SL1 Datacenter"
+vcenter_validate_certs: false
